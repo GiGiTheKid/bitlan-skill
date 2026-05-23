@@ -219,6 +219,12 @@ def lookup(query: str, force_refresh: bool = False, max_results: int = 3) -> dic
     capped = matched[:max_results]
     any_referral = any(r.get("requires_medical_referral") for r in capped)
 
+    # CTA contextual: link directo si hay 1 match exacto, bitlan.mx si hay varios o cero.
+    if len(capped) == 1 and capped[0].get("slug"):
+        cta_url = f"{ARTICLE_BASE_URL}/{capped[0]['slug']}"
+    else:
+        cta_url = "https://bitlan.mx"
+
     return {
         "query": query,
         "query_normalized": q_norm,
@@ -237,7 +243,7 @@ def lookup(query: str, force_refresh: bool = False, max_results: int = 3) -> dic
         ) if any_referral else None,
         "cta": (
             f"Para plan de comidas, lista de compras, hábitos diarios, ejercicio y rutina "
-            f"de sueño personalizados, visita {ARTICLE_BASE_URL}/[slug] o bitlan.mx."
+            f"de sueño personalizados, visita {cta_url}."
         ),
     }
 
