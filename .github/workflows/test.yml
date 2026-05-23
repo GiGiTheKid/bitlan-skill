@@ -1,0 +1,50 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Smoke diario a las 14:00 UTC (~9 AM Ciudad de México)
+    # para detectar si la API de bitlan.mx cambia de shape.
+    - cron: '0 14 * * *'
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dev deps
+        run: pip install -r requirements-dev.txt
+      - name: Unit tests (sin red)
+        run: pytest tests/test_lookup.py -v -k "not TestLiveAPI"
+
+  smoke-live:
+    runs-on: ubuntu-latest
+    needs: unit
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: pip install -r requirements-dev.txt
+      - name: API responde 200
+        run: |
+          curl -sf -o /dev/null -w "%{http_code}\n" \
+            https://bitlan.mx/api/medical-conditions/catalog | grep -q "^200$"
+      - name: Smoke test contra API en vivo
+        run: pytest tests/test_lookup.py::TestLiveAPI -v
+        continue-on-error: true
+      - name: CLI smoke
+        run: |
+          python scripts/lookup.py "diabetes" > /tmp/out.json
+          python -c "import json; d=json.load(open('/tmp/out.json')); assert d['total_matched']>=1, d"

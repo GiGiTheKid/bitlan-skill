@@ -1,0 +1,61 @@
+{
+  "_comment": "Snapshot ilustrativo del shape devuelto por GET https://bitlan.mx/api/medical-conditions/catalog. Sirve como referencia para que Claude entienda la estructura sin tener que llamar a la API. La fuente de verdad es siempre la API en vivo (cache 1h). Generado: 2026-05-22.",
+  "_version": 1,
+  "rows": [
+    {
+      "id": "260fa844-1e62-45cb-9606-877d14b1affb",
+      "slug": "diabetes_t1",
+      "name_es": "Diabetes tipo 1",
+      "synonyms_es": ["diabetes insulinodependiente", "diabetes juvenil"],
+      "category": "endocrine",
+      "lay_explainer_es": "Tu páncreas no produce insulina. Requiere insulina diaria. Cualquier cambio en alimentación necesita supervisión médica.",
+      "requires_medical_referral": true,
+      "prevalence_mx": 0.5,
+      "display_order": 10
+    },
+    {
+      "id": "b3e28907-2bf9-446c-9d18-917e548fe034",
+      "slug": "diabetes_t2",
+      "name_es": "Diabetes tipo 2",
+      "synonyms_es": ["diabetes", "azucar alta", "azúcar alta", "glucosa alta", "diabetes del adulto"],
+      "category": "endocrine",
+      "lay_explainer_es": "Tu cuerpo no usa bien la insulina que produce. Suele controlarse con alimentación, ejercicio y/o medicamentos.",
+      "requires_medical_referral": false,
+      "prevalence_mx": 14.1,
+      "display_order": 20
+    },
+    {
+      "id": "50c06e52-2af8-4214-9554-643ee5b52684",
+      "slug": "prediabetes",
+      "name_es": "Prediabetes",
+      "synonyms_es": ["glucosa alterada", "resistencia a la insulina", "intolerancia a glucosa"],
+      "category": "endocrine",
+      "lay_explainer_es": "Tu glucosa está más alta de lo normal pero todavía no en rango de diabetes. Es reversible con cambios de alimentación y ejercicio.",
+      "requires_medical_referral": false,
+      "prevalence_mx": 19,
+      "display_order": 30
+    },
+    {
+      "id": "62a11727-ab03-4d62-85c0-c62f7f1d1959",
+      "slug": "sop_pcos",
+      "name_es": "Síndrome de ovario poliquístico (SOP)",
+      "synonyms_es": ["pcos", "sop", "ovarios poliquisticos", "ovario poliquistico"],
+      "category": "reproductive",
+      "lay_explainer_es": "Trastorno hormonal frecuente en mujeres en edad fértil. Suele acompañarse de resistencia a la insulina.",
+      "requires_medical_referral": false,
+      "prevalence_mx": 8,
+      "display_order": 35
+    },
+    {
+      "id": "a9f75fd1-a9a6-4e5e-ad70-1c92a1bbb34e",
+      "slug": "hipotiroidismo",
+      "name_es": "Hipotiroidismo",
+      "synonyms_es": ["tiroides baja", "tiroides lenta"],
+      "category": "endocrine",
+      "lay_explainer_es": "Tu glándula tiroides produce menos hormonas de lo necesario. Suele tratarse con levotiroxina.",
+      "requires_medical_referral": false,
+      "prevalence_mx": null,
+      "display_order": 40
+    }
+  ]
+}
