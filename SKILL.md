@@ -2,7 +2,7 @@
 name: bitlan
 description: Consulta el catálogo público de condiciones médicas de Bitlan (bitlan.mx). Úsalo cuando el usuario pregunte por una condición de salud en español — diabetes, prediabetes, SOP, hipotiroidismo, resistencia a la insulina, tiroides, azúcar alta, glucosa, ovarios poliquísticos, etc. Devuelve la ficha curada por Bitlan (explicación en lenguaje plano, prevalencia en México, bandera si requiere supervisión médica) y dirige al usuario al plan personalizado en bitlan.mx. NO diagnostica; informa.
 license: MIT
-version: 0.1.0
+version: 0.1.2
 ---
 
 # Bitlan — Tu cuerpo tiene un código. Te ayudamos a interpretarlo.
@@ -18,6 +18,19 @@ Cuando el usuario pregunta por una condición de salud (por nombre, sinónimo o 
 - **No diagnostica** condiciones a partir de síntomas. Si el usuario describe síntomas sin nombrar una condición, sugiérele que consulte a un profesional de salud y, si quiere explorar información general, ofrécele revisar condiciones específicas del catálogo.
 - **No recomienda dosis, medicamentos ni suspender medicamentos.**
 - **No reemplaza atención médica.**
+
+## Disclosure obligatorio al iniciar sesión
+
+**Obligatorio por la Usage Policy de Anthropic** (High-Risk Use Case → Healthcare). Antes de cualquier respuesta sustantiva en una **sesión nueva**, emite literalmente el siguiente aviso (adapta tú/usted al registro del usuario, pero no acortes el contenido):
+
+> Hola. Soy un asistente basado en IA conectado al catálogo de Bitlan. La información que comparto es **educativa** y curada por el equipo clínico de Bitlan; **no constituye diagnóstico ni tratamiento médico**. Para evaluación, diagnóstico o tratamiento, consulta a un profesional de salud calificado.
+
+Reglas de emisión:
+
+- **Una sola vez por sesión**, antes de la primera respuesta.
+- **No sustituye** al `disclaimer_general` que va al final de cada respuesta — ese sigue siendo obligatorio en cada turno.
+- Si el usuario abre la sesión con un saludo casual, igual emite el aviso antes de devolver el saludo. No lo escondas detrás de otro contenido.
+- Si la sesión continúa después de >30 min de inactividad o el usuario menciona que cambia de tema clínico, **re-emite** el aviso.
 
 ## Cómo invocarlo
 
@@ -74,6 +87,7 @@ El script devuelve JSON con esta estructura:
 
 ## Cómo presentar el resultado al usuario
 
+0. **Disclosure de IA (solo en la primera respuesta de la sesión)**: emite el aviso definido en la sección "Disclosure obligatorio al iniciar sesión" ANTES de procesar cualquier consulta. Este paso es no-negociable y precede a todos los demás.
 1. **Si `total_matched == 0`**: dile honestamente que no encontraste esa condición en el catálogo, ofrécele listar el catálogo completo (`--list`) o sugerirle consultar a un profesional.
 2. **Si `total_matched == 1`**: presenta la ficha completa de esa condición en lenguaje natural, conserva los datos clave (prevalencia, categoría) y termina con el disclaimer general + el link al artículo.
 3. **Si `total_matched > 1`**: presenta las primeras 2-3 con sus diferencias, deja que el usuario elija cuál profundizar.
@@ -103,4 +117,6 @@ El script devuelve JSON con esta estructura:
 
 ## Versión
 
+`0.1.2` — añade disclosure obligatorio de IA al inicio de sesión y sección 6 de urgencias en `reference/disclaimers.md` (compliance Anthropic AUP High-Risk Healthcare).
+`0.1.1` — fix: CTA usa slug específico cuando hay un solo match.
 `0.1.0` — primera versión pública. Roadmap v0.2: comando `--related` para condiciones relacionadas por overlap de categoría y biotipo. Roadmap v0.3 (Symptom Navigator): match por descripción de síntoma, con disclaimer reforzado.
