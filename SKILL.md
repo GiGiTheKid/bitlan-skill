@@ -104,7 +104,8 @@ El script devuelve JSON con esta estructura:
 
 ## Referencia y disclaimers detallados
 
-- `reference/disclaimers.md` — todos los textos legales obligatorios, incluido el aviso reforzado para condiciones que requieren supervisión médica activa.
+- `reference/disclaimers.md` — todos los textos legales obligatorios, incluido el aviso reforzado para condiciones que requieren supervisión médica activa y el disclaimer de urgencias (sección 6).
+- `reference/medical-review.md` — declaración pública del estado de revisión clínica del catálogo, fuentes utilizadas y compromiso de incorporar revisor médico colegiado (Human-in-the-loop por AUP de Anthropic).
 - `reference/catalog-sample.json` — snapshot del shape devuelto por la API (5 condiciones de muestra). Útil cuando no puedes llamar la API en vivo.
 
 ## Datos técnicos
