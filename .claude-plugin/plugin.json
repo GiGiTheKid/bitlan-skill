@@ -1,0 +1,24 @@
+{
+  "name": "bitlan",
+  "version": "0.2.0",
+  "description": "Consulta el catálogo público de condiciones médicas de Bitlan (bitlan.mx) en español. Devuelve fichas curadas — explicación en lenguaje plano, prevalencia en México, bandera de supervisión médica — con disclaimer obligatorio de IA y derivación a urgencias cuando aplica. NO diagnostica; informa.",
+  "author": {
+    "name": "Jose Luis Castro G (GiGiTheKid)",
+    "email": "legal@bitlan.mx",
+    "url": "https://bitlan.mx"
+  },
+  "homepage": "https://bitlan.mx",
+  "repository": "https://github.com/GiGiTheKid/bitlan-skill",
+  "license": "MIT",
+  "keywords": [
+    "health",
+    "medical",
+    "spanish",
+    "mexico",
+    "latam",
+    "diabetes",
+    "endocrinology",
+    "wellness",
+    "patient-education"
+  ]
+}

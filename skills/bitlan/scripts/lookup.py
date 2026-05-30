@@ -15,15 +15,18 @@ Diseño:
 - Output JSON estable para que Claude lo parsee sin sorpresas.
 
 Uso CLI:
-    python lookup.py "diabetes"           # lookup por nombre/sinónimo
-    python lookup.py "tiroides baja"      # acepta sinónimos
-    python lookup.py --list               # lista catálogo completo (orden display_order)
-    python lookup.py --slug diabetes_t2   # lookup directo por slug
-    python lookup.py --refresh "SOP"      # ignora cache y re-fetchea
+    python3 lookup.py "diabetes"           # lookup por nombre/sinónimo
+    python3 lookup.py "tiroides baja"      # acepta sinónimos
+    python3 lookup.py --list               # lista catálogo completo (orden display_order)
+    python3 lookup.py --slug diabetes_t2   # lookup directo por slug
+    python3 lookup.py --refresh "SOP"      # ignora cache y re-fetchea
 
 Uso programático:
     from lookup import lookup, list_catalog
     result = lookup("prediabetes")
+
+Dependencias: NINGUNA fuera de la stdlib de Python 3.10+. El plugin es
+zero-deps deliberadamente para que funcione out-of-the-box sin pip.
 """
 
 from __future__ import annotations
@@ -33,18 +36,10 @@ import json
 import sys
 import time
 import unicodedata
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any
-
-try:
-    import requests
-except ImportError:
-    print(
-        "Error: falta el paquete 'requests'.\n"
-        "Instala con: pip install -r requirements.txt",
-        file=sys.stderr,
-    )
-    sys.exit(1)
 
 # ---------------------------------------------------------------------------
 # Config
@@ -137,29 +132,35 @@ def fetch_catalog(force_refresh: bool = False) -> dict[str, Any]:
         if cached and "rows" in cached:
             return cached
 
+    req = urllib.request.Request(
+        CATALOG_URL,
+        headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
+    )
     try:
-        resp = requests.get(
-            CATALOG_URL,
-            headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
-            timeout=HTTP_TIMEOUT_SECONDS,
-        )
-    except requests.RequestException as e:
-        # Si falla la red pero tenemos cache (aunque viejo), úsalo.
+        with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT_SECONDS) as resp:
+            status = resp.status
+            body = resp.read().decode("utf-8", errors="replace")
+    except urllib.error.HTTPError as e:
+        # Respuesta del servidor con código != 2xx.
+        cached = _read_cache()
+        if cached and "rows" in cached:
+            return cached
+        raise RuntimeError(f"API devolvió {e.code}: {e.reason}") from e
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
+        # Fallo de red (DNS, conexión, timeout). Si tenemos cache aunque vieja, úsala.
         cached = _read_cache()
         if cached and "rows" in cached:
             return cached
         raise RuntimeError(f"No se pudo conectar a {CATALOG_URL}: {e}") from e
 
-    if resp.status_code != 200:
+    if status != 200:
         cached = _read_cache()
         if cached and "rows" in cached:
             return cached
-        raise RuntimeError(
-            f"API devolvió {resp.status_code}: {resp.text[:200]}"
-        )
+        raise RuntimeError(f"API devolvió {status}: {body[:200]}")
 
     try:
-        data = resp.json()
+        data = json.loads(body)
     except ValueError as e:
         raise RuntimeError(f"Respuesta no es JSON válido: {e}") from e
 

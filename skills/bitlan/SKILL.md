@@ -34,25 +34,25 @@ Reglas de emisión:
 
 ### Lookup por nombre o sinónimo (caso más común)
 ```bash
-python scripts/lookup.py "diabetes"
-python scripts/lookup.py "tiroides baja"
-python scripts/lookup.py "azucar alta"
-python scripts/lookup.py "SOP"
+python3 scripts/lookup.py "diabetes"
+python3 scripts/lookup.py "tiroides baja"
+python3 scripts/lookup.py "azucar alta"
+python3 scripts/lookup.py "SOP"
 ```
 
 ### Lookup directo por slug
 ```bash
-python scripts/lookup.py --slug diabetes_t2
+python3 scripts/lookup.py --slug diabetes_t2
 ```
 
 ### Listar el catálogo completo
 ```bash
-python scripts/lookup.py --list
+python3 scripts/lookup.py --list
 ```
 
 ### Forzar refresh ignorando cache local
 ```bash
-python scripts/lookup.py --refresh "prediabetes"
+python3 scripts/lookup.py --refresh "prediabetes"
 ```
 
 ## Shape del output
@@ -113,19 +113,21 @@ El script devuelve JSON con esta estructura:
 - **Cache servidor**: `s-maxage=3600, stale-while-revalidate=86400`.
 - **Cache local del Skill**: 1h en `~/.cache/bitlan-skill/catalog.json`.
 - **Filas actuales**: ~39 condiciones, payload trivial (~30 KB).
+- **Dependencias**: **ninguna** fuera de la stdlib de Python 3.10+. El plugin es zero-deps deliberadamente; no requiere `pip install` para funcionar.
 
 ## Versión y licencia
 
 **Licencia:** MIT (ver `LICENSE`).
-**Versión actual:** `0.1.2`.
+**Versión actual:** `0.2.0`.
 
 Changelog:
 
+- `0.2.0` — reestructura a layout de plugin oficial (`.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` + `skills/bitlan/`). Refactor a **zero-deps** (eliminada dependencia de `requests`, ahora usa `urllib` stdlib). Invocaciones cambian a `python3` para portabilidad en macOS moderno. Listo para submission al Anthropic plugin marketplace.
 - `0.1.2` — añade disclosure obligatorio de IA al inicio de sesión, sección 6 de urgencias en `reference/disclaimers.md` y `reference/medical-review.md` (compliance Anthropic AUP High-Risk Healthcare). `requirements.txt` con pin upper.
 - `0.1.1` — fix: CTA usa slug específico cuando hay un solo match.
 - `0.1.0` — primera versión pública.
 
 Roadmap:
 
-- `v0.2` — comando `--related` para condiciones relacionadas por overlap de categoría y biotipo.
-- `v0.3` (Symptom Navigator) — match por descripción de síntoma, con disclaimer reforzado.
+- `v0.3` — comando `--related` para condiciones relacionadas por overlap de categoría y biotipo.
+- `v0.4` (Symptom Navigator) — match por descripción de síntoma, con disclaimer reforzado.

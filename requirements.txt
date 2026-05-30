@@ -1,1 +1,3 @@
-requests>=2.31.0,<3
+# Bitlan Skill — zero runtime dependencies.
+# Solo necesitas Python 3.10+ (stdlib es suficiente).
+# Mantenido como archivo para compatibilidad con `pip install -r requirements.txt`.

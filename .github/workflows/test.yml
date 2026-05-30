@@ -24,7 +24,7 @@ jobs:
       - name: Install dev deps
         run: pip install -r requirements-dev.txt
       - name: Unit tests (sin red)
-        run: pytest tests/test_lookup.py -v -k "not TestLiveAPI"
+        run: pytest skills/bitlan/tests/test_lookup.py -v -k "not TestLiveAPI"
 
   smoke-live:
     runs-on: ubuntu-latest
@@ -42,9 +42,9 @@ jobs:
           curl -sf -o /dev/null -w "%{http_code}\n" \
             https://bitlan.mx/api/medical-conditions/catalog | grep -q "^200$"
       - name: Smoke test contra API en vivo
-        run: pytest tests/test_lookup.py::TestLiveAPI -v
+        run: pytest skills/bitlan/tests/test_lookup.py::TestLiveAPI -v
         continue-on-error: true
       - name: CLI smoke
         run: |
-          python scripts/lookup.py "diabetes" > /tmp/out.json
+          python skills/bitlan/scripts/lookup.py "diabetes" > /tmp/out.json
           python -c "import json; d=json.load(open('/tmp/out.json')); assert d['total_matched']>=1, d"

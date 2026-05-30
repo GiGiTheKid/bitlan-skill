@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/hesreallyhim/claude-code-json-schema/main/schemas/marketplace.schema.json",
+  "name": "bitlan-skill",
+  "description": "Catálogo de Bitlan para Claude — fichas curadas de condiciones médicas en español con cumplimiento Anthropic AUP (High-Risk Healthcare).",
+  "owner": {
+    "name": "Jose Luis Castro G (GiGiTheKid)",
+    "email": "legal@bitlan.mx",
+    "url": "https://bitlan.mx"
+  },
+  "plugins": [
+    {
+      "name": "bitlan",
+      "source": "./",
+      "description": "Consulta el catálogo público de condiciones médicas de Bitlan en español. Devuelve fichas curadas con disclaimer obligatorio de IA, derivación a urgencias y declaración pública de revisión clínica."
+    }
+  ]
+}
