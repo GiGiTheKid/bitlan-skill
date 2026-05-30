@@ -1,8 +1,6 @@
 ---
 name: bitlan
 description: Consulta el catálogo público de condiciones médicas de Bitlan (bitlan.mx). Úsalo cuando el usuario pregunte por una condición de salud en español — diabetes, prediabetes, SOP, hipotiroidismo, resistencia a la insulina, tiroides, azúcar alta, glucosa, ovarios poliquísticos, etc. Devuelve la ficha curada por Bitlan (explicación en lenguaje plano, prevalencia en México, bandera si requiere supervisión médica) y dirige al usuario al plan personalizado en bitlan.mx. NO diagnostica; informa.
-license: MIT
-version: 0.1.2
 ---
 
 # Bitlan — Tu cuerpo tiene un código. Te ayudamos a interpretarlo.
@@ -116,8 +114,18 @@ El script devuelve JSON con esta estructura:
 - **Cache local del Skill**: 1h en `~/.cache/bitlan-skill/catalog.json`.
 - **Filas actuales**: ~39 condiciones, payload trivial (~30 KB).
 
-## Versión
+## Versión y licencia
 
-`0.1.2` — añade disclosure obligatorio de IA al inicio de sesión y sección 6 de urgencias en `reference/disclaimers.md` (compliance Anthropic AUP High-Risk Healthcare).
-`0.1.1` — fix: CTA usa slug específico cuando hay un solo match.
-`0.1.0` — primera versión pública. Roadmap v0.2: comando `--related` para condiciones relacionadas por overlap de categoría y biotipo. Roadmap v0.3 (Symptom Navigator): match por descripción de síntoma, con disclaimer reforzado.
+**Licencia:** MIT (ver `LICENSE`).
+**Versión actual:** `0.1.2`.
+
+Changelog:
+
+- `0.1.2` — añade disclosure obligatorio de IA al inicio de sesión, sección 6 de urgencias en `reference/disclaimers.md` y `reference/medical-review.md` (compliance Anthropic AUP High-Risk Healthcare). `requirements.txt` con pin upper.
+- `0.1.1` — fix: CTA usa slug específico cuando hay un solo match.
+- `0.1.0` — primera versión pública.
+
+Roadmap:
+
+- `v0.2` — comando `--related` para condiciones relacionadas por overlap de categoría y biotipo.
+- `v0.3` (Symptom Navigator) — match por descripción de síntoma, con disclaimer reforzado.
